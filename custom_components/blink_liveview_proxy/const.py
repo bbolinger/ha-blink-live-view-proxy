@@ -11,6 +11,10 @@ DOMAIN = "blink_liveview_proxy"
 CONF_BASE_URL = "base_url"
 CONF_STREAM_SECONDS = "stream_seconds"
 CONF_TOKEN = "token"
+# Stored on the entry for a future per-entry clip-recording toggle. No options
+# flow sets it yet and nothing reads the stored value, but __init__ imports
+# both names, so they must exist here or the integration fails to import.
+CONF_CLIP_RECORDING = "clip_recording"
 
 DEFAULT_BASE_URL = "http://127.0.0.1:8088"
 # What the add-on leaves in the Home Assistant config directory: its generated
@@ -72,5 +76,6 @@ ICONSET_MODULE_URL = f"{ASSET_URL_BASE}/blink-liveview-icons.js"
 LEGACY_FRONTEND_RESOURCE_URL = f"{LEGACY_ASSET_URL_BASE}/blink-liveview-dialog.js"
 DEFAULT_SCAN_INTERVAL = timedelta(seconds=30)
 DEFAULT_STREAM_SECONDS = 60
+DEFAULT_CLIP_RECORDING = False
 
 PLATFORMS = [Platform.CAMERA, Platform.BINARY_SENSOR]

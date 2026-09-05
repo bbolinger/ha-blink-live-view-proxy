@@ -8,6 +8,18 @@ While this is pre-1.0, the minor version moves for anything user-visible (new
 behaviour, a dropped architecture, a changed default) and the patch version for
 fixes that change nothing about how it is used.
 
+## [0.7.1] — 2026-09-05
+
+- **The integration loads again.** 0.7.0 imported `CONF_CLIP_RECORDING` and
+  `DEFAULT_CLIP_RECORDING` from `const.py`, which never defined them, so
+  `async_setup_entry` raised `ImportError` before it ran: the entry sat in
+  "cannot connect", the sidebar panel never registered, and none of the
+  entities came up. The two constants are now defined. The value is stored for
+  a future per-entry clip-recording toggle and is read by nothing yet, so this
+  changes only whether the integration starts. A source-level test now asserts
+  every name imported from `const` is defined there, on every CI run, because
+  nothing that runs in CI imports the integration package itself.
+
 ## [0.7.0] — 2026-09-05
 
 Everything found in the rc.2 and rc.3 testing pass, closed. Nine of these
