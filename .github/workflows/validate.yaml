@@ -115,3 +115,5 @@ jobs:
 
       - name: const export tests
         run: python tests/test_const_exports.py
+      - name: Internal import tests
+        run: python tests/test_internal_imports.py
