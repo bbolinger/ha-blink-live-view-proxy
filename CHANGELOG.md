@@ -8,7 +8,7 @@ While this is pre-1.0, the minor version moves for anything user-visible (new
 behaviour, a dropped architecture, a changed default) and the patch version for
 fixes that change nothing about how it is used.
 
-## [0.7.0-rc.4] — 2026-09-05
+## [0.7.0] — 2026-09-05
 
 Everything found in the rc.2 and rc.3 testing pass, closed. Nine of these
 arrived as pull requests from @bbolinger and @fritzzetik against the release
