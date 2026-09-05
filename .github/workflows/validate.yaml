@@ -112,3 +112,6 @@ jobs:
 
       - name: Clip route guard tests
         run: python tests/test_clip_route_guard.py
+
+      - name: Internal import tests
+        run: python tests/test_internal_imports.py
