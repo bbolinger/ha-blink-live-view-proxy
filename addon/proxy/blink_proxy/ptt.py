@@ -84,6 +84,10 @@ class PttAudioBridge:
             "aac",
             "-profile:a",
             "aac_low",
+            # The camera's decoder does not handle a PNS frame: it stops draining
+            # its input queue and closes the session about 68 frames later.
+            "-aac_pns",
+            "0",
             "-b:a",
             str(config.get("ptt_aac_bitrate", "40k")),
             "-f",

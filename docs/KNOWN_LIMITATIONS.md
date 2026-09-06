@@ -51,13 +51,12 @@
   upstream audio channel, so the proxy raises `push-to-talk is not available
   over RTSP`. Live view on those cameras is otherwise unaffected. They are on
   `ptt_disabled_product_types` by default so the button is never offered there.
-- Push-to-talk does not work on the Wired Floodlight (`superior`) either, for a
-  different reason: it gets Blink's IMMI transport, so the path exists, but the
-  audio shape the camera expects is not the one the proxy sends. Measured cost
-  of pressing it there is worse than a refusal — the camera closes the stream
-  mid-hold and will not rejoin a live view for about three minutes — so it is
-  denied by default too. A capture of what Blink's own app sends to a
-  `superior` would make this fixable, and the entry should come out then.
+- Push-to-talk on the Wired Floodlight (`superior`) was denied by default until
+  September 6, 2026, when it was confirmed audible. The mid-hold close was the
+  camera's decoder refusing PNS frames, which ffmpeg's AAC encoder emits by
+  default; the encoder is now started with `-aac_pns 0`. `catalina` and `xt2`
+  are on the same IMMI path and were never denied, but neither has been
+  retested since that change.
   Measured by @bbolinger.
 - Which transport a camera gets is Blink's decision, not a setting. A model
   moved from `rtsps://` to `immis://` by Blink would gain push-to-talk, and a
