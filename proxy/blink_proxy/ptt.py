@@ -68,8 +68,6 @@ class PttAudioBridge:
             "-hide_banner",
             "-loglevel",
             str(config.get("ffmpeg_loglevel", "warning")),
-            "-fflags",
-            "nobuffer",
             "-f",
             "s16le",
             "-ar",
