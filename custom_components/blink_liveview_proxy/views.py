@@ -579,6 +579,23 @@ video.ready {{
   top:auto;
   bottom:calc(16px + env(safe-area-inset-bottom, 0px));
 }}
+.live-notice {{
+  position:absolute;
+  top:calc(62px + env(safe-area-inset-top, 0px));
+  right:calc(16px + env(safe-area-inset-right, 0px));
+  left:calc(16px + env(safe-area-inset-left, 0px));
+  z-index:4;
+  border-radius:6px;
+  background:rgba(15,23,42,.82);
+  color:#f8fafc;
+  font-size:14px;
+  line-height:1.35;
+  padding:8px 12px;
+  text-align:right;
+}}
+.live-notice[hidden] {{
+  display:none;
+}}
 button,a.button {{
   appearance:none;
   border:0;
@@ -668,6 +685,7 @@ button.talk.active {{
       </div>
     </div>
   </section>
+  <div id="liveNotice" class="live-notice" hidden></div>
   <div id="liveActions" class="live-actions" hidden>
     <button id="sound" class="secondary" type="button" aria-pressed="false">Unmute</button>
     <button id="talk" class="talk" type="button" disabled>Hold Talk</button>
@@ -699,6 +717,7 @@ const spinner = document.getElementById("spinner");
 const statusText = document.getElementById("status");
 const actions = document.getElementById("actions");
 const liveActions = document.getElementById("liveActions");
+const liveNotice = document.getElementById("liveNotice");
 const restart = document.getElementById("restart");
 const save = document.getElementById("save");
 const talk = document.getElementById("talk");
@@ -903,6 +922,20 @@ function pcm16Buffer(floatData) {{
   return pcm.buffer;
 }}
 
+function talkMessage(message) {{
+  // #status lives inside #overlay, and the same onplaying handler that enables
+  // Hold Talk hides the overlay. Anything written there once playback starts is
+  // invisible, so talk messages go to a notice that outlives the overlay.
+  statusText.textContent = message;
+  liveNotice.textContent = message;
+  liveNotice.hidden = !message;
+}}
+
+function clearTalkMessage() {{
+  liveNotice.textContent = "";
+  liveNotice.hidden = true;
+}}
+
 function setTalkButton(state, label) {{
   talk.classList.toggle("pending", state === "pending");
   talk.classList.toggle("active", state === "listening");
@@ -928,7 +961,7 @@ function handleTalkStatus(data) {{
       setTalkButton("idle", "Hold Talk");
     }}
   }} else if (data.type === "error" && data.message) {{
-    statusText.textContent = data.message;
+    talkMessage(data.message);
     talkListening = false;
     setTalkButton("idle", "Hold Talk");
   }}
@@ -967,15 +1000,16 @@ async function startTalk(event) {{
   }}
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!window.isSecureContext) {{
-    statusText.textContent = "Microphone needs HTTPS or a trusted local browser origin.";
+    talkMessage("Microphone needs HTTPS or a trusted local browser origin.");
     return;
   }}
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !AudioContextClass) {{
-    statusText.textContent = "Microphone is not available in this browser.";
+    talkMessage("Microphone is not available in this browser.");
     return;
   }}
 
   const epoch = ++talkEpoch;
+  clearTalkMessage();
   talkStarting = true;
   talkActive = true;
   talkListening = false;
@@ -1026,7 +1060,7 @@ async function startTalk(event) {{
     talkStarting = false;
   }} catch (err) {{
     talkStarting = false;
-    statusText.textContent = "Could not start microphone.";
+    talkMessage("Could not start microphone.");
     await stopTalk();
   }}
 }}
@@ -1135,6 +1169,7 @@ function setLoading(message) {{
 }}
 
 function setEnded(message) {{
+  clearTalkMessage();
   overlay.classList.remove("hidden");
   spinner.hidden = true;
   actions.hidden = false;
