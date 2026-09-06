@@ -713,6 +713,7 @@ let talkSource = null;
 let talkProcessor = null;
 let talkMute = null;
 let talkActive = false;
+let talkEpoch = 0;
 let talkStarting = false;
 let talkListening = false;
 
@@ -974,13 +975,14 @@ async function startTalk(event) {{
     return;
   }}
 
+  const epoch = ++talkEpoch;
   talkStarting = true;
   talkActive = true;
   talkListening = false;
   setTalkButton("pending", "Connecting");
 
   try {{
-    talkStream = await navigator.mediaDevices.getUserMedia({{
+    const stream = await navigator.mediaDevices.getUserMedia({{
       audio: {{
         channelCount: 1,
         echoCancellation: true,
@@ -989,9 +991,20 @@ async function startTalk(event) {{
       }},
       video: false
     }});
+    if (!talkActive || epoch !== talkEpoch) {{
+      for (const track of stream.getTracks()) {{ track.stop(); }}
+      return;
+    }}
+    talkStream = stream;
     talkContext = new AudioContextClass();
     await talkContext.resume();
-    talkWs = await connectTalkSocket();
+    const ws = await connectTalkSocket();
+    if (!talkActive || epoch !== talkEpoch) {{
+      try {{ ws.close(); }} catch (err) {{}}
+      await stopTalk();
+      return;
+    }}
+    talkWs = ws;
     talkWs.send(JSON.stringify({{
       type: "start",
       sampleRate: Math.round(talkContext.sampleRate)
@@ -1023,6 +1036,7 @@ async function stopTalk(event) {{
     event.preventDefault();
   }}
   const wasActive = talkActive;
+  talkEpoch += 1;
   talkStarting = false;
   talkActive = false;
   talkListening = false;
