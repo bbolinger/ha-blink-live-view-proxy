@@ -55,8 +55,8 @@
   September 6, 2026, when it was confirmed audible. The mid-hold close was the
   camera's decoder refusing PNS frames, which ffmpeg's AAC encoder emits by
   default; the encoder is now started with `-aac_pns 0`. `catalina` and `xt2`
-  are on the same IMMI path and were never denied, but neither has been
-  retested since that change.
+  are on the same IMMI path, were never denied, and were confirmed audible with
+  the flag in on the same day.
   Measured by @bbolinger.
 - Which transport a camera gets is Blink's decision, not a setting. A model
   moved from `rtsps://` to `immis://` by Blink would gain push-to-talk, and a

@@ -224,7 +224,7 @@ button could only ever fail. No work on the proxy changes that.
 `superior` used to be on the list for a different reason, and came off once
 the capture that entry asked for existed. The audio shape was not the problem:
 the encoder was emitting PNS frames, which the camera's decoder does not
-handle. Confirmed audible on a Wired Floodlight.
+handle. Confirmed audible on a Wired Floodlight, a `catalina` and an `xt2`.
 
 That is a different case from `mini` and `owl`, which these lists used to
 carry — set before anyone had actually tried it, and a Blink Mini/`owl` was

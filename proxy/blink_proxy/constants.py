@@ -96,8 +96,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
     # The audio shape was never the problem the four-second close suggested: the
     # encoder was emitting PNS frames, which the camera's decoder does not
     # handle, and it closed the session about 68 frames after the first one.
-    # See the -aac_pns argument in ptt.py. Confirmed audible on a Wired
-    # Floodlight; catalina and xt2 are on the IMMI path too but untested.
+    # See the -aac_pns argument in ptt.py. Confirmed audible on every family
+    # this account has on the IMMI path: superior, catalina and xt2.
     "ptt_disabled_product_types": ["xt", "white"],
     "prefer_v6_liveview": True,
     "send_liveview_token": True,
