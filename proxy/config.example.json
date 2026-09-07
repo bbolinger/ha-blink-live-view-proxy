@@ -13,8 +13,6 @@
   "hls_dir": "/var/lib/blink-liveview-proxy/hls",
   "hls_idle_timeout": 10,
   "hls_start_timeout": 30,
-  "hls_transcode": false,
-  "hls_frame_rate": 24,
   "liveview_cache_dir": "/var/lib/blink-liveview-proxy/liveviews",
   "clip_cache_dir": "/var/lib/blink-liveview-proxy/clips",
   "clip_cache_max_mb": 512,

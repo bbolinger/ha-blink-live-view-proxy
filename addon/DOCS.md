@@ -39,7 +39,6 @@ the host.
 | `blink_2fa_code` | — | Live PIN handoff while the running add-on is waiting; leave empty before login and clear after success |
 | `proxy_api_token` | generated | Leave empty. The add-on generates one on first start, keeps it in `/data/proxy-token` across restarts and updates, and shares it with the HA integration. Set it only to pin a token of your own. |
 | `port` | `8088` | Port the proxy HTTP API listens on |
-| `low_latency` | `false` | Re-encode the live view into one-second segments so it starts several seconds sooner. Costs CPU for each open stream; see [Low latency](../docs/CONFIGURATION.md#low-latency) |
 | `cameras` | `[]` | List of camera entries (see below) |
 | `ptt_disabled_product_types` | empty | Blink product types that are never offered Hold Talk, e.g. `owl`. Empty keeps the proxy's own default rather than allowing everything |
 | `ptt_disabled_camera_types` | empty | The same, by camera type, e.g. `mini`. Empty keeps the proxy's default |

@@ -51,8 +51,6 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "hls_dir": ".runtime/blink-liveview-proxy",
     "hls_idle_timeout": 10,
     "hls_start_timeout": 30,
-    "hls_transcode": False,
-    "hls_frame_rate": 24,
     "liveview_cache_dir": ".runtime/blink-liveview-proxy/liveviews",
     # Local clips are fetched from Blink once and kept here, with the first
     # frame of each cut as a thumbnail. Oldest files go first past the cap.

@@ -20,7 +20,6 @@ options:
   blink_2fa_code: ""
   proxy_api_token: ""
   port: 8088
-  low_latency: false
   cameras: []
   ptt_disabled_product_types: []
   ptt_disabled_camera_types: []
@@ -31,7 +30,6 @@ schema:
   blink_2fa_code: str
   proxy_api_token: str
   port: int
-  low_latency: bool
   cameras:
     - slug: str
       entity_id: str
