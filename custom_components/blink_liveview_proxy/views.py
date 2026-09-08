@@ -1036,10 +1036,10 @@ async function stopTalk(event) {{
     event.preventDefault();
   }}
   const wasActive = talkActive;
-  talkEpoch += 1;
   talkStarting = false;
   talkActive = false;
   talkListening = false;
+  talkEpoch += 1;
   setTalkButton("idle", "Hold Talk");
 
   if (talkProcessor) {{
