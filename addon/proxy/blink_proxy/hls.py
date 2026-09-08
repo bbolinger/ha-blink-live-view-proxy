@@ -81,8 +81,10 @@ class HlsSession:
                 str(self.cache_tmp),
             ]
 
-        # A segment can only begin on a keyframe and Blink sends one every 4s,
-        # so that is the segment length whatever -hls_time asks for.
+        # Segments are cut on the clock, not on Blink's 4 s keyframes, so the
+        # playlist can declare a 1 s target and iOS starts after ~3 s instead of
+        # ~12. Only every fourth segment opens on a keyframe; a player that lands
+        # mid-group waits for the next one, so the window keeps 8 s available.
         codec_args = ["-c", "copy"]
 
         log_handle = open(self.log_path, "wb")
@@ -114,9 +116,9 @@ class HlsSession:
                 "-hls_time",
                 "1",
                 "-hls_list_size",
-                "4",
+                "8",
                 "-hls_flags",
-                "delete_segments+omit_endlist+program_date_time",
+                "delete_segments+omit_endlist+program_date_time+split_by_time",
                 "-hls_segment_filename",
                 str(segment_pattern),
                 str(self.playlist),

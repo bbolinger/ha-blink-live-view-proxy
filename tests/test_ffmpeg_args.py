@@ -165,8 +165,13 @@ async def main():
     )
     check(
         "the stream is copied, not re-encoded",
-        option(args, "-c") == "copy" and option(args, "-hls_list_size") == "4",
-        "-c copy with a four segment playlist",
+        option(args, "-c") == "copy" and option(args, "-hls_list_size") == "8",
+        "-c copy with an eight segment playlist",
+    )
+    check(
+        "copied segments are cut on the clock",
+        "split_by_time" in option(args, "-hls_flags").split("+"),
+        "split_by_time is in -hls_flags so segments are 1 s, not one GOP",
     )
     check(
         "no encoder is configured at all",
