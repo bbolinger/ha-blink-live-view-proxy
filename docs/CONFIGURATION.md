@@ -92,17 +92,30 @@ asked to wake, so the camera never lights up and nothing explains why.
 
 ## Start-up
 
-The proxy copies Blink's stream into HLS segments unchanged. A segment can only
-begin on a keyframe and Blink sends one every four seconds, so four seconds is
-the segment length and a player has video a few seconds after the tap: seven to
-nine seconds measured on an iPhone over a cloud connection, most of it Blink
-waking the camera.
+The proxy copies Blink's stream into HLS segments unchanged — there is no
+re-encode and no encoder cost per open stream.
 
-An opt-in mode that re-encoded the video into one-second segments was removed
-in favour of this. It started the picture two to three seconds sooner and cost
-a keyframe every second under a 2 Mbit/s cap, which spent the bitrate on
-restarting the picture rather than on detail, and a client uploading audio at
-the same time could not keep up with it.
+Blink sends a keyframe every four seconds. A segment normally has to begin on
+one, which used to make every segment four seconds long and left a player
+waiting eight to twelve seconds after the tap before it had enough of the
+playlist to start. The segmenter now runs with `split_by_time`, so segments are
+cut on the clock at the one-second target (`-hls_time 1`) instead of on Blink's
+keyframes. Only every fourth segment opens on a keyframe; a player that joins
+mid-group waits for the next one, which is why the playlist window is eight
+segments (`-hls_list_size 8`) rather than four.
+
+Measured on an iPhone, the picture arrives about four seconds after the tap
+instead of about twelve. Most of what is left is Blink waking the camera, which
+nothing on this side can shorten.
+
+An opt-in `hls_transcode` mode (add-on option `low_latency`) used to buy the
+same head start by re-encoding through `libx264` to force a keyframe every
+second. It was removed in 0.8.0: clock-cut segments get there without an
+encoder, and the re-encode spent a 2 Mbit/s cap on restarting the picture every
+second rather than on detail, which cost visible quality. A client uploading
+push-to-talk audio at the same time could not always keep up with it either.
+The add-on still accepts a stored `low_latency` so an existing install keeps
+booting, but the value does nothing.
 
 ## ffmpeg Tuning
 

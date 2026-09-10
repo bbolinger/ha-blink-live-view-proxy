@@ -40,6 +40,7 @@ the host.
 | `proxy_api_token` | generated | Leave empty. The add-on generates one on first start, keeps it in `/data/proxy-token` across restarts and updates, and shares it with the HA integration. Set it only to pin a token of your own. |
 | `port` | `8088` | Port the proxy HTTP API listens on |
 | `cameras` | `[]` | List of camera entries (see below) |
+| `low_latency` | — | Accepted and ignored; the re-encode it enabled was removed in 0.8.0. Safe to delete from your add-on options |
 | `ptt_disabled_product_types` | empty | Blink product types that are never offered Hold Talk, e.g. `owl`. Empty keeps the proxy's own default rather than allowing everything |
 | `ptt_disabled_camera_types` | empty | The same, by camera type, e.g. `mini`. Empty keeps the proxy's default |
 | `ptt_force_enabled_slugs` | empty | Cameras that are offered Hold Talk whatever the two lists above say |
